@@ -1,7 +1,7 @@
 <?php include __DIR__ . "/../_header.phtml"; ?>
 <?php /** @var Domains_GeneDataItem $data */ ?>
     <?php if($data) { ?>
-        <table class="table table-striped table-hover table-bordered align-middle shadow-sm">
+        <table class="data-table table table-striped table-hover table-bordered align-middle shadow-sm">
             <thead class="table-dark">
                 <tr>
                     <th>Id</th>
@@ -10,6 +10,7 @@
                     <th>Position</th>
                     <th>Organism</th>
                     <th>Reviewed</th>
+                    <th>Details</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +47,12 @@
                                    &#10008; Not reviewed
                                </span>
                            <?php } ?>
+                       </td>
+                       <td>
+                           <a href="./<?= $obj->id?>"
+                              class="details-button btn btn-sm rounded-circle">
+                               &#128269;
+                           </a>
                        </td>
                    </tr>
                  <?php
