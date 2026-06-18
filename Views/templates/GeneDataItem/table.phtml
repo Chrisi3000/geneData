@@ -1,32 +1,52 @@
 <?php include __DIR__ . "/../_header.phtml"; ?>
 <?php /** @var Domains_GeneDataItem $data */ ?>
     <?php if($data) { ?>
-        <table class="table table-striped table-hover">
-            <thead>
+        <table class="table table-striped table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-dark">
                 <tr>
                     <th>Id</th>
                     <th>GeneName</th>
                     <th>GeneSymbol</th>
-                    <th>aliases</th>
-                    <th>position</th>
-                    <th>function</th>
-                    <th>organism</th>
-                    <th>reviewed</th>
+                    <th>Position</th>
+                    <th>Organism</th>
+                    <th>Reviewed</th>
                 </tr>
             </thead>
             <tbody>
-                <?php
-                    foreach ($data as $obj){
-                ?>
+                <?php foreach ($data as $obj){ ?>
+                    <?php
+                    $reviewed = strtolower((string)($obj->reviewed ?? ''));
+                    $isReviewed = $reviewed === 'yes'
+                            || $reviewed === 'true'
+                            || $reviewed === '1'
+                            || $reviewed === 'reviewed';
+                    ?>
+
                    <tr>
-                       <td><?=$obj->id?></td>
+                       <td class="fw-semibold"><?=$obj->id?></td>
                        <td><?=$obj->genename?></td>
-                       <td><?=$obj->GeneSymbol?></td>
-                       <td><?=$obj->aliases?></td>
-                       <td><?=$obj->position?></td>
-                       <td><?=$obj->function?></td>
+                       <td>
+                           <span class="badge bg-secondary">
+                               <?=$obj->GeneSymbol?>
+                           </span>
+                       </td>
+                       <td>
+                           <code>
+                               <?=$obj->position?>
+                           </code>
+                       </td>
                        <td><?=$obj->organism?></td>
-                       <td><?=$obj->reviewed?></td>
+                       <td>
+                           <?php if ($isReviewed) { ?>
+                               <span class="badge bg-success">
+                                   &#10004; Reviewed
+                               </span>
+                           <?php } else { ?>
+                               <span class="badge bg-danger">
+                                   &#10008; Not reviewed
+                               </span>
+                           <?php } ?>
+                       </td>
                    </tr>
                  <?php
                     }
@@ -34,7 +54,11 @@
             </tbody>
         </table>
     <?php } else { ?>
-        No data found.
+        <div class="p-4 text-center">
+            <div class="alert alert-info mb-0">
+                Keine Daten gefunden.
+            </div>
+        </div>
     <?php } ?>
 
 <?php include __DIR__ . "/../_footer.phtml"; ?>
