@@ -124,18 +124,22 @@ ALTER TABLE `user`
     ADD UNIQUE KEY `username` (`username`);
 
 ALTER TABLE `genedataitem`
-    ADD PRIMARY KEY (`id`);
+    ADD PRIMARY KEY (`id`),
     ADD KEY `organism_id` (`organism_id`),
     ADD KEY `created_by` (`created_by`);
 
 -- set foreign keys in genedataitem
 ALTER TABLE `genedataitem`
     ADD CONSTRAINT `fk_genedataitem_organism`
-    FOREIGN KEY (`organism_id`) REFERENCES `organism` (`id`)
-    ON DELETE RESTRICT ON UPDATE CASCADE,
+        FOREIGN KEY (`organism_id`)
+        REFERENCES `organism` (`id`)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
     ADD CONSTRAINT `fk_genedataitem_user`
-    FOREIGN KEY (`created_by`) REFERENCES `user` (`id`)
-    ON DELETE RESTRICT ON UPDATE CASCADE;
+        FOREIGN KEY (`created_by`)
+        REFERENCES `user` (`id`)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE;
 
 -- Add AutoIncrement
 ALTER TABLE `organism`
