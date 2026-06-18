@@ -1,7 +1,7 @@
 <?php include __DIR__ . "/../_header.phtml"; ?>
 <?php /** @var Domains_GeneDataItem $data */ ?>
     <?php if($data) { ?>
-        <table class="data-table table table-striped table-hover table-bordered align-middle shadow-sm">
+        <table class="gene-data-table table table-striped table-hover table-bordered">
             <thead class="table-dark">
                 <tr>
                     <th>Id</th>
@@ -15,14 +15,6 @@
             </thead>
             <tbody>
                 <?php foreach ($data as $obj){ ?>
-                    <?php
-                    $reviewed = strtolower((string)($obj->reviewed ?? ''));
-                    $isReviewed = $reviewed === 'yes'
-                            || $reviewed === 'true'
-                            || $reviewed === '1'
-                            || $reviewed === 'reviewed';
-                    ?>
-
                    <tr>
                        <td class="fw-semibold"><?=$obj->id?></td>
                        <td><?=$obj->genename?></td>
@@ -38,18 +30,11 @@
                        </td>
                        <td><?=$obj->organism?></td>
                        <td>
-                           <?php if ($isReviewed) { ?>
-                               <span class="badge bg-success">
-                                   &#10004; Reviewed
-                               </span>
-                           <?php } else { ?>
-                               <span class="badge bg-danger">
-                                   &#10008; Not reviewed
-                               </span>
-                           <?php } ?>
+                           <?php $reviewedValue = $obj->reviewed; ?>
+                           <?php include __DIR__ . "/_reviewed_badge.phtml"; ?>
                        </td>
                        <td>
-                           <a href="./<?= $obj->id?>"
+                           <a href="/geneData/GeneDataItem/<?= $obj->id?>"
                               class="details-button btn btn-sm rounded-circle">
                                &#128269;
                            </a>

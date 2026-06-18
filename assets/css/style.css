@@ -11,8 +11,14 @@ body {
     background: linear-gradient(135deg, var(--color-green), var(--color-green-light));
 }
 
-.data-table {
+.gene-data-table {
     background-color: #ffffff;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+}
+
+.gene-data-table th,
+.gene-data-table td {
+    vertical-align: middle;
 }
 
 .details-button {

@@ -2,7 +2,11 @@
 
 
 spl_autoload_register(function ($class_name){
-    require_once implode("/", explode("_", $class_name)) . ".php";
+    $file = __DIR__ . "/" . implode("/", explode("_", $class_name)) . ".php";
+
+    if (is_readable($file)) {
+        require_once $file;
+    }
 });
 
 $dispatcher = new Utils_Dispatcher();

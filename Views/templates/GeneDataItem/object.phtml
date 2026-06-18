@@ -1,40 +1,71 @@
 <?php include __DIR__ . "/../_header.phtml"; ?>
 <?php /** @var Domains_GeneDataItem $data */ ?>
 
-    <a href="/geneData/GeneDataItem">Back</a>
+    <a href="/geneData/GeneDataItem"
+       class="btn btn-outline-success rounded-pill px-3">
+        &#8592; Back
+    </a>
+
     <?php if ($data) { ?>
-        <form>
-            <div class="form-group">
-                <label>Id</label>
-                <input type="number" id="entry_id" class="form-control-plaintext"
-                       value="<?=$data->id?>" readonly>
-            </div>
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" id="name" class="form-control-plaintext"
-                       value="<?=$data->name?>">
-            </div>
-            <div class="form-group">
-                <label>Entry</label>
-                <input type="date" id="entry" class="form-control-plaintext"
-                       value="<?=$data->entry?>">
-            </div>
-            <div class="form-group">
-                <label>Description</label>
-                <input type="text" id="description" class="form-control-plaintext"
-                       value="<?=$data->description?>">
-            </div>
-            <div class="form-group">
-                <label>Expiration date</label>
-                <input type="date" id="exp" class="form-control-plaintext"
-                       value="<?=$data->exp?>">
-            </div>
-            <br>
-            <br>
-            <div id="json-representation"></div>
-        </form>
+        <table class="gene-data-table table table-striped table-hover table-bordered mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Wert</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td class="fw-semibold"><?=$data->id?></td>
+                </tr>
+                <tr>
+                    <th>GeneName</th>
+                    <td><?=$data->genename?></td>
+                </tr>
+                <tr>
+                    <th>GeneSymbol</th>
+                    <td>
+                        <span class="badge bg-secondary">
+                            <?=$data->GeneSymbol?>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Aliases</th>
+                    <td><?=$data->aliases?></td>
+                </tr>
+                <tr>
+                    <th>Position</th>
+                    <td>
+                        <code>
+                            <?=$data->position?>
+                        </code>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Function</th>
+                    <td><?=$data->function?></td>
+                </tr>
+                <tr>
+                    <th>Organism</th>
+                    <td><?=$data->organism?></td>
+                </tr>
+                <tr>
+                    <th>Reviewed</th>
+                    <td>
+                        <?php $reviewedValue = $data->reviewed; ?>
+                        <?php include __DIR__ . "/_reviewed_badge.phtml"; ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     <?php } else { ?>
-        <div>No data found.</div>
+        <div class="p-4 text-center">
+            <div class="alert alert-info mb-0">
+                Keine Daten gefunden.
+            </div>
+        </div>
     <?php } ?>
 
 <?php include __DIR__ . "/../_footer.phtml"; ?>

@@ -1,0 +1,14 @@
+<?php
+$reviewedText = strtolower((string)($reviewedValue ?? ""));
+$isReviewed = in_array($reviewedText, ["yes", "true", "1", "reviewed"], true);
+?>
+
+<?php if ($isReviewed) { ?>
+    <span class="badge bg-success">
+        &#10004; Reviewed
+    </span>
+<?php } else { ?>
+    <span class="badge bg-danger">
+        &#10008; Not reviewed
+    </span>
+<?php } ?>
