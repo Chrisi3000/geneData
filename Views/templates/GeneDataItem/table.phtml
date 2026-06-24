@@ -18,7 +18,7 @@
                     <th>Position</th>
                     <th>Organism</th>
                     <th>Reviewed</th>
-                    <th>Details</th>
+                    <th>More</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,10 +42,23 @@
                            <?php include __DIR__ . "/_reviewed_badge.phtml"; ?>
                        </td>
                        <td>
-                           <a href="/geneData/GeneDataItem/<?= $obj->id?>"
-                              class="details-button btn btn-sm rounded-circle">
-                               &#128269;
-                           </a>
+                           <div class="table-actions">
+                               <a href="/geneData/GeneDataItem/<?= $obj->id?>"
+                                  class="details-button btn btn-sm rounded-circle"
+                                  title="Details"
+                                  aria-label="Details">
+                                   &#128269;
+                               </a>
+                               <?php if (Utils_Login::is_logged_in()): ?>
+                                   <button type="button"
+                                           class="delete-button btn btn-sm rounded-circle"
+                                           title="Delete"
+                                           aria-label="Delete"
+                                           onclick="deleteGeneDataItem(<?= (int)$obj->id ?>)">
+                                       &#128465;
+                                   </button>
+                               <?php endif; ?>
+                           </div>
                        </td>
                    </tr>
                  <?php
@@ -63,5 +76,24 @@
 
 
 
+
+<script>
+    function deleteGeneDataItem(id) {
+        if (!confirm("Delete this gene?")) {
+            return;
+        }
+
+        fetch("/geneData/GeneDataItem/" + id, {
+            method: "DELETE"
+        }).then((response) => {
+            if (response.ok) {
+                location.reload();
+                return;
+            }
+
+            alert("Gene could not be deleted.");
+        });
+    }
+</script>
 
 <?php include __DIR__ . "/../_footer.phtml"; ?>

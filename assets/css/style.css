@@ -49,9 +49,13 @@ body {
     vertical-align: middle;
 }
 
-.details-button {
-    border: 2px solid var(--color-green);
-    color: var(--color-green);
+.table-actions {
+    display: flex;
+    gap: .4rem;
+}
+
+.details-button,
+.delete-button {
     width: 32px;
     height: 32px;
     padding: 0;
@@ -61,8 +65,24 @@ body {
     line-height: 1;
 }
 
+.details-button {
+    border: 2px solid var(--color-green);
+    color: var(--color-green);
+}
+
 .details-button:hover,
 .details-button:focus {
     background-color: rgba(25, 135, 84, 0.12);
     color: var(--color-green);
+}
+
+.delete-button {
+    border: 2px solid #dc3545;
+    color: #dc3545;
+}
+
+.delete-button:hover,
+.delete-button:focus {
+    background-color: rgba(220, 53, 69, 0.12);
+    color: #dc3545;
 }

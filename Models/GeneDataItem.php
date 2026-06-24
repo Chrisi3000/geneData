@@ -56,4 +56,14 @@ class Models_GeneDataItem extends Models_Base {
         }
     }
 
+    public function delete($id): void {
+        $query = "DELETE FROM genedataitem WHERE id = :id";
+        $statement = $this->connection->prepare($query);
+        $statement->execute([":id" => $id]);
+
+        if ($statement->rowCount() === 0) {
+            throw new Exceptions_NotFound();
+        }
+    }
+
 }
