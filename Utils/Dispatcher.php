@@ -54,6 +54,10 @@ class Utils_Dispatcher
 
             $controller->$verb();
 
+            if (!isset($_SESSION["user"])) {
+                Utils_Login::register_guest();
+            }
+
         } catch (Throwable $e){
             echo "error occurred: ";
             echo $e->getMessage();

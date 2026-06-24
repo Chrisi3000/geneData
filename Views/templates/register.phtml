@@ -1,0 +1,40 @@
+<?php include __DIR__."/_header.phtml"; ?>
+
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="card shadow-sm p-4" style="width: 100%; max-width: 420px;">
+        <h2 class="text-center mb-4">Register</h2>
+
+        <form action="/geneData/Register" method="POST">
+            <div class="mb-3">
+                <label class="form-label">First Name</label>
+                <input type="text" name="firstname" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Last Name</label>
+                <input type="text" name="lastname" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+
+        <?php
+        if (isset($_SESSION["register_error"])) {
+            echo "<div class='alert alert-danger mt-3'>" . $_SESSION["register_error"] . "</div>";
+            unset($_SESSION["register_error"]);
+        }
+        ?>
+    </div>
+</div>
+
+<?php include __DIR__."/_footer.phtml"; ?>

@@ -1,4 +1,12 @@
 <?php include __DIR__ . "/../_header.phtml"; ?>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <?php if (Utils_Login::is_logged_in()): ?>
+        <a href="/geneData/Admin/users" class="btn btn-outline-success rounded-pill px-3">
+            Add Gene
+        </a>
+    <?php endif; ?>
+</div>
+
 <?php /** @var Domains_GeneDataItem $data */ ?>
     <?php if($data) { ?>
         <table class="gene-data-table table table-striped table-hover table-bordered">
@@ -11,7 +19,6 @@
                     <th>Organism</th>
                     <th>Reviewed</th>
                     <th>Details</th>
-                    <th>Update</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,16 +42,23 @@
                            <?php include __DIR__ . "/_reviewed_badge.phtml"; ?>
                        </td>
                        <td>
-                           <a href="/geneData/GeneDataItem/<?= $obj->id?>"
-                              class="details-button btn btn-sm rounded-circle">
-                               &#128269;
-                           </a>
-                       </td>
-                       <td>
-                           <a href="/geneData/update/<?= $obj->id ?>"
-                              class="update-button btn btn-sm btn-warning">
-                               ✏️
-                           </a>
+                           <div class="table-actions">
+                               <a href="/geneData/GeneDataItem/<?= $obj->id?>"
+                                  class="details-button btn btn-sm rounded-circle"
+                                  title="Details"
+                                  aria-label="Details">
+                                   &#128269;
+                               </a>
+                               <?php if (Utils_Login::is_logged_in()): ?>
+                                   <button type="button"
+                                           class="details-button btn btn-sm rounded-circle"
+                                           title="Delete"
+                                           aria-label="Delete"
+                                           onclick="deleteGeneDataItem(<?= (int)$obj->id ?>)">
+                                       &#128465;&#65039;
+                                   </button>
+                               <?php endif; ?>
+                           </div>
                        </td>
                    </tr>
                  <?php
@@ -60,9 +74,31 @@
     <?php } else { ?>
         <div class="p-4 text-center">
             <div class="alert alert-info mb-0">
-                Keine Daten gefunden.
+                No data found.
             </div>
         </div>
     <?php } ?>
+
+
+
+
+<script>
+    function deleteGeneDataItem(id) {
+        if (!confirm("Delete this gene?")) {
+            return;
+        }
+
+        fetch("/geneData/GeneDataItem/" + id, {
+            method: "DELETE"
+        }).then((response) => {
+            if (response.ok) {
+                location.reload();
+                return;
+            }
+
+            alert("Gene could not be deleted.");
+        });
+    }
+</script>
 
 <?php include __DIR__ . "/../_footer.phtml"; ?>

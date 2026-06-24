@@ -11,6 +11,18 @@ body {
     background: linear-gradient(135deg, var(--color-green), var(--color-green-light));
 }
 
+@media (max-width: 575.98px) {
+    .site-header .container {
+        align-items: flex-start !important;
+        flex-direction: column;
+    }
+
+    .site-header-actions {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+}
+
 .gene-data-table {
     background-color: #ffffff;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
@@ -21,9 +33,12 @@ body {
     vertical-align: middle;
 }
 
+.table-actions {
+    display: flex;
+    gap: .4rem;
+}
+
 .details-button {
-    border: 2px solid var(--color-green);
-    color: var(--color-green);
     width: 32px;
     height: 32px;
     padding: 0;
@@ -31,6 +46,11 @@ body {
     align-items: center;
     justify-content: center;
     line-height: 1;
+}
+
+.details-button {
+    border: 2px solid var(--color-green);
+    color: var(--color-green);
 }
 
 .details-button:hover,

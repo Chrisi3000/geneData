@@ -4,12 +4,20 @@ require_once "Base.php";
 
 class Views_Html extends Views_Base
 {
+
     public function render($data)
     {
         // 1. Standard-Templates definieren
         if (is_array($data)) {
             $template = "table.phtml";
-        } else {
+        }
+        else if($data === "login"){
+            $template = "login.phtml";
+        }
+        else if($data === "register"){
+            $template = "register.phtml";
+        }
+        else{
             $template = "object.phtml";
         }
 
@@ -25,6 +33,10 @@ class Views_Html extends Views_Base
         // 3. Prüfen, ob das spezifische Template im Ordner existiert (z.B. templates/GeneDataItem/create.phtml)
         if (is_readable(dirname(__FILE__) . "/templates/" . $this->resource_name . "/" . $template)) {
             $template = $this->resource_name . "/" . $template;
+        }
+
+        if($data instanceof Exception){
+            $template = "error.phtml";
         }
 
         // 4. Template einbinden
