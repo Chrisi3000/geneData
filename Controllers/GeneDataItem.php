@@ -20,13 +20,18 @@ class Controllers_GeneDataItem extends Controllers_Base {
         $this->view->render($data);
     }
 
+    public function create()
+    {
+        $this->view->render(null);
+    }
+
     public function post()
     {
         $obj = new Domains_GeneDataItem($_POST);
         $data = $this->model->insert($obj);
 
-        http_response_code(301);
-        header('Location: ' . '/geneData/GeneDataItem/' . $data->id);
+        http_response_code(302);
+        header('Location: /geneData/GeneDataItem/' . $data->id);
         die();
     }
 

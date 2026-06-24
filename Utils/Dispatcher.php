@@ -7,7 +7,9 @@ class Utils_Dispatcher
 {
     public function dispatch() {
 
-        $url_elements = explode("/", $_SERVER['PATH_INFO']);
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $url_elements = explode("/", trim($path, "/"));
+
         $resource_type = $url_elements[1];
         $path_params = array_filter(array_slice($url_elements, 2));
 
@@ -20,10 +22,18 @@ class Utils_Dispatcher
 
             $verb = strtolower($_SERVER['REQUEST_METHOD']);
 
+            if ($verb === "get" && isset($path_params[0]) && $path_params[0] === "create") {
+                $verb = "create";
+                array_shift($path_params);
+            }
+
+            $view = new Views_Html($resource_type, $verb, $path_params);
+
+            $controller_name = "Controllers_" . $resource_type;
+            $controller = new $controller_name($view, $path_params);
+
             if ($verb === "post" && isset($_POST['_method'])) {
-
                 $override = strtolower($_POST['_method']);
-
                 if (in_array($override, ['put', 'delete'])) {
                     $verb = $override;
                 }

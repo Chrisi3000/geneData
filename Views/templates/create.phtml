@@ -1,0 +1,33 @@
+<?php include __DIR__ . "/_header.phtml"; ?>
+
+    <h2>Gene anlegen</h2>
+
+    <form method="post" action="/geneData/GeneDataItem/post">
+
+        <div class="mb-3">
+            <label>Gene Name</label>
+            <input type="text" name="genename" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Gene Symbol</label>
+            <input type="text" name="genesymbol" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Position</label>
+            <input type="text" name="position" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Organism</label>
+            <input type="text" name="organism" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Speichern
+        </button>
+
+    </form>
+
+<?php include __DIR__."/_footer.phtml"; ?>
