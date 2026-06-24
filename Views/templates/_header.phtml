@@ -14,11 +14,15 @@
 <body>
 <header class="site-header py-2 mb-4">
     <div class="container d-flex justify-content-between align-items-center gap-3">
-        <div class="text-white">
-            <a href="/geneData/Login" class="text-decoration-none text-reset">
-                <h1 class="display-6 fw-bold">GeneData</h1>
-            </a>
-        </div>
+        <form action="/geneData/Login" method="POST" class="m-0">
+            <button type="submit"
+                    name="guest"
+                    value="1"
+                    class="display-6 fw-bold text-white bg-transparent border-0 p-0"
+                    title="Continue as guest">
+                GeneData
+            </button>
+        </form>
         <nav class="site-header-actions">
             <?php if (Utils_Login::is_admin()): ?>
                 <a href="/geneData/Admin/users" class="btn btn-outline-light rounded-pill px-3">
@@ -28,6 +32,10 @@
             <?php if (Utils_Login::is_logged_in()): ?>
                 <a href="/geneData/Logout" class="btn btn-outline-light rounded-pill px-3">
                     Logout
+                </a>
+            <?php else: ?>
+                <a href="/geneData/Login" class="btn btn-outline-light rounded-pill px-3">
+                    Login
                 </a>
             <?php endif; ?>
         </nav>

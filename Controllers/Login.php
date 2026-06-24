@@ -43,7 +43,7 @@ class Controllers_Login extends Controllers_Base {
    }
 
     public function guest() {
-        Utils_Login::register_guest();
+       Utils_Login::register_guest();
 
        header("Location: /geneData/GeneDataItem");
        exit();
