@@ -14,12 +14,13 @@ class Controllers_Login extends Controllers_Base {
    }
 
    public function post(){
-       if(isset($_POST["guest"])){
+       if($_POST["action"] == "guest") {
            $this->guest();
+           exit();
        }
 
-       $input_username = $_POST["username"];
-       $input_password = $_POST["password"];
+       $input_username = $_POST["username"] ?? null;
+       $input_password = $_POST["password"] ?? null;
 
        if($input_username == null || $input_password == null){
            $_SESSION["login_error"] = "Username or password is not entered.";
