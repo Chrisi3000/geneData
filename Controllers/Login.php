@@ -34,13 +34,7 @@ class Controllers_Login extends Controllers_Base {
    }
 
     public function guest() {
-        $user = new Domains_User([
-            "id" => null,
-            "username" => "guest",
-            "password" => null,
-            "is_admin" => 0
-        ]);
-       Utils_Login::register_session($user);
+        Utils_Login::register_guest();
 
        header("Location: /geneData/GeneDataItem");
        exit();

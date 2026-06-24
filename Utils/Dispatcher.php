@@ -19,6 +19,10 @@ class Utils_Dispatcher
             $verb = strtolower($_SERVER['REQUEST_METHOD']);
             $controller->$verb();
 
+            if (!isset($_SESSION["user"])) {
+                Utils_Login::register_guest();
+            }
+
         } catch (Throwable $e){
             echo "error occured:" ;
             echo $e->getMessage();

@@ -7,6 +7,16 @@ class Utils_Login {
         $_SESSION["is_admin"] = (int)$user->is_admin;
     }
 
+    static function register_guest(): void{
+        $user = new Domains_User([
+            "id" => null,
+            "username" => "guest",
+            "password" => null,
+            "is_admin" => 0
+        ]);
+        Utils_Login::register_session($user);
+    }
+
     static function delete_session(){
         unset($_SESSION['user']);
     }
@@ -18,12 +28,10 @@ class Utils_Login {
     }
 
     public static function is_admin():bool{
-        return $_SESSION['is_admin'];
+        return !empty($_SESSION['is_admin']);
     }
 
     public static function is_logged_in():bool{
-        return $_SESSION['logged_in'];
+        return !empty($_SESSION['logged_in']);
     }
-
-
 }
