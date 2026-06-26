@@ -42,6 +42,18 @@ class Models_User extends Models_Base{
         }, $res);
     }
 
+    public function setToAdmin($id, $is_admin) {
+        $query = "UPDATE user SET is_admin = :is_admin WHERE id = :id";
+        $statement = $this->connection->prepare($query);
+        $statement->execute([
+            ":is_admin" => $is_admin ? 1 : 0,
+            ":id" => $id
+        ]);
+
+        echo $id;
+        echo $statement->rowCount();
+    }
+
     public function delete($id): void {
         if (!filter_var($id, FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]])) {
             throw new Exceptions_NotFound();

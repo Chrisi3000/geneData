@@ -1,0 +1,107 @@
+<?php include __DIR__ . "/_header.phtml"; ?>
+<?php
+/** @var array $data */
+$gene = $data['gene'];
+$organisms = $data['organisms'];
+?>
+
+    <a href="/geneData/GeneDataItem"
+       class="btn btn-outline-success rounded-pill px-3 mb-3">
+        &#8592; Back
+    </a>
+
+    <h2>Edit Gene: <?= htmlspecialchars($gene->genename) ?></h2>
+
+    <form id="editGeneForm">
+        <input type="hidden" id="geneId" value="<?= (int)$gene->id ?>">
+
+        <div class="mb-3">
+            <label for="genename">Gene Name</label>
+            <input type="text" id="genename" class="form-control" value="<?= htmlspecialchars($gene->genename) ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="genesymbol">Gene Symbol</label>
+            <input type="text" id="genesymbol" class="form-control" value="<?= htmlspecialchars($gene->genesymbol) ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="aliases">Aliases</label>
+            <input type="text" id="aliases" class="form-control" value="<?= htmlspecialchars($gene->aliases ?? '') ?>">
+        </div>
+
+        <div class="mb-3">
+            <label for="position">Position</label>
+            <input type="text" id="position" class="form-control" value="<?= htmlspecialchars($gene->position) ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="function">Function</label>
+            <textarea id="function" class="form-control"><?= htmlspecialchars($gene->function ?? '') ?></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="organism_id">Organism</label>
+            <select id="organism_id" class="form-select" required>
+                <option value="" disabled>-- please choose --</option>
+                <?php foreach ($organisms as $organism): ?>
+                    <option value="<?= $organism->id ?>" <?= $organism->id == $gene->organism_id ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($organism->name) ?>
+                        <?php if (!empty($organism->latin_name)): ?>
+                            (<?= htmlspecialchars($organism->latin_name) ?>)
+                        <?php endif; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="reviewed" <?= $gene->reviewed ? 'checked' : '' ?>>
+            <label class="form-check-label" for="reviewed">Reviewed</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Save Changes
+        </button>
+    </form>
+
+    <script>
+        document.getElementById('editGeneForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('geneId').value;
+
+            const payload = {
+                id: document.getElementById('geneId').value,
+                genename: document.getElementById('genename').value,
+                genesymbol: document.getElementById('genesymbol').value,
+                aliases: document.getElementById('aliases').value,
+                position: document.getElementById('position').value,
+                function: document.getElementById('function').value,
+                organism_id: document.getElementById('organism_id').value,
+                reviewed: document.getElementById('reviewed').checked ? "1" : "0"
+            };
+
+            fetch("/geneData/GeneDataItem/" + id, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(async response => {
+                    if (response.ok) {
+                        window.location.href = "/geneData/GeneDataItem/" + id;
+                    } else {
+                        const errData = await response.json().catch(() => ({}));
+                        alert("Fehler beim Updaten: " + (errData.error || "Serverfehler"));
+                    }
+                })
+                .catch(error => {
+                    console.error("Netzwerkfehler:", error);
+                    alert("Es konnte keine Verbindung zum Server hergestellt werden.");
+                });
+        });
+    </script>
+
+<?php include __DIR__ . "/_footer.phtml"; ?>

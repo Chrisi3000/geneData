@@ -13,24 +13,24 @@ class Utils_Dispatcher
         $resource_type = $url_elements[1];
         $path_params = array_filter(array_slice($url_elements, 2));
 
-        $view = new Views_Html($resource_type, $path_params);
-
-        try {
-
-            $controller_name = "Controllers_" . $resource_type;
-            $controller = new $controller_name($view, $path_params);
-
-            $verb = strtolower($_SERVER['REQUEST_METHOD']);
-
+        $verb = strtolower($_SERVER['REQUEST_METHOD']);
             if ($verb === "get" && isset($path_params[0]) && $path_params[0] === "create") {
                 $verb = "create";
                 array_shift($path_params);
             }
 
-            $view = new Views_Html($resource_type, $verb, $path_params);
+        $action = null;
 
-            $controller_name = "Controllers_" . $resource_type;
-            $controller = new $controller_name($view, $path_params);
+        if (isset($path_params[0]) && in_array($path_params[0], ['create', 'edit'])) {
+            $action = $path_params[0];
+            array_shift($path_params);
+        }
+
+        $view = new Views_Html($resource_type, $verb, $path_params);
+        $controller_name = "Controllers_" . $resource_type;
+        $controller = new $controller_name($view, $path_params);
+
+        try {
 
             if ($verb === "post" && isset($_POST['_method'])) {
                 $override = strtolower($_POST['_method']);
@@ -47,18 +47,24 @@ class Utils_Dispatcher
                 parse_str(file_get_contents("php://input"), $GLOBALS["_DELETE"]);
             }
 
-
-            if (!method_exists($controller, $verb)) {
-                throw new Exception("Method not allowed: " . $verb);
+            if ($verb === "patch") {
+                var_dump($verb);
+                $GLOBALS["_PATCH"] = json_decode(file_get_contents("php://input"), true);
             }
 
-            $controller->$verb();
+            if ($action && method_exists($controller, $action)) {
+                $controller->$action();
+            } elseif (method_exists($controller, $verb)) {
+                $controller->$verb();
+            } else {
+                throw new Exception("Method not allowed");
+            }
 
             if (!isset($_SESSION["user"])) {
                 Utils_Login::register_guest();
             }
 
-        } catch (Throwable $e){
+        } catch (Throwable $e) {
             echo "error occurred: ";
             echo $e->getMessage();
         }

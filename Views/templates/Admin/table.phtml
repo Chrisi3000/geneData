@@ -17,42 +17,54 @@
 ?>
 
 <?php /** @var Domains_User $data */ ?>
-<?php if($data) { ?>
-    <table class="gene-data-table table table-striped table-hover table-bordered">
-        <thead class="table-dark">
-        <tr>
-            <th>Id</th>
-            <th>Username</th>
-            <th>Admin</th>
-            <th>Delete</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($data as $obj){ ?>
+    <?php if($data) { ?>
+        <table class="gene-data-table table table-striped table-hover table-bordered">
+            <thead class="table-dark">
             <tr>
-                <td class="fw-semibold"><?=$obj->id?></td>
-                <td><?=$obj->username?></td>
-                <td><?=$obj->is_admin?></td>
-                <td>
-                    <?php if ((int)$obj->id === (int)Utils_Login::get_user_id()): ?>
-                        <span class="text-muted">Current user</span>
-                    <?php else: ?>
-                        <button onclick="delete_user(<?= (int)$obj->id ?>)" class="btn btn-danger">Delete</button>
-                    <?php endif; ?>
-                </td>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Admin</th>
+                <th>Admin State</th>
+                <th>Delete</th>
             </tr>
-            <?php
-        }
-        ?>
-        </tbody>
-    </table>
-<?php } else { ?>
-    <div class="p-4 text-center">
-        <div class="alert alert-info mb-0">
-            No data found.
+            </thead>
+            <tbody>
+            <?php foreach ($data as $obj){ ?>
+                <tr>
+                    <td class="fw-semibold"><?=$obj->id?></td>
+                    <td><?=$obj->username?></td>
+                    <td>
+                        <div class="table-actions">
+                            <?php if (Utils_Login::is_admin() && Utils_Login::get_user_id() != $obj->id): ?>
+                                <input type="checkbox"
+                                        <?= $obj->is_admin ? "checked" : "" ?>
+                                       onclick="setToAdmin(this, <?= (int)$obj->id ?>)">
+                            <?php else: ?>
+                                Current User
+                            <?php endif; ?>
+                        </div>
+                    </td>
+                    <td><?=$obj->is_admin?></td>
+                    <td>
+                        <?php if ((int)$obj->id === (int)Utils_Login::get_user_id()): ?>
+                            <span class="text-muted">Current user</span>
+                        <?php else: ?>
+                            <button onclick="delete_user(<?= (int)$obj->id ?>)" class="btn btn-danger">Delete</button>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <?php
+            }
+            ?>
+            </tbody>
+        </table>
+    <?php } else { ?>
+        <div class="p-4 text-center">
+            <div class="alert alert-info mb-0">
+                No data found.
+            </div>
         </div>
-    </div>
-<?php } ?>
+    <?php } ?>
 
 <script>
     function delete_user(id){
@@ -69,6 +81,30 @@
             }
 
             alert("User could not be deleted.");
+        });
+    }
+
+    function setToAdmin(el, id) {
+        console.log("CLICKED", id, el.checked);
+        if (!confirm("Change admin state of user?")) {
+            return;
+        }
+
+        fetch("/geneData/Admin/" + id, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                is_admin: el.checked
+            })
+        }).then(response => {
+            if (response.ok) {
+                location.reload(); return;
+            }
+            alert("Admin state could not be changed.");
+        }).catch(err => {
+            console.log("ERROR:", err);
         });
     }
 </script>
