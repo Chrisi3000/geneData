@@ -9,15 +9,15 @@
 
 <?php /** @var Domains_GeneDataItem $data */ ?>
     <?php if($data) { ?>
-        <table class="gene-data-table table table-striped table-hover table-bordered">
+        <table id="gene-table" class="gene-data-table table table-striped table-hover table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th>Id</th>
-                    <th>GeneName</th>
-                    <th>GeneSymbol</th>
-                    <th>Position</th>
-                    <th>Organism</th>
-                    <th>Reviewed</th>
+                    <th onclick="sortGeneTable(0)" style="cursor: pointer;">Id<span id="sort-arrow-0"></span></th>
+                    <th onclick="sortGeneTable(1)" style="cursor: pointer;">GeneName<span id="sort-arrow-1"></span></th>
+                    <th onclick="sortGeneTable(2)" style="cursor: pointer;">GeneSymbol<span id="sort-arrow-2"></span></th>
+                    <th onclick="sortGeneTable(3)" style="cursor: pointer;">Position<span id="sort-arrow-3"></span></th>
+                    <th onclick="sortGeneTable(4)" style="cursor: pointer;">Organism<span id="sort-arrow-4"></span></th>
+                    <th onclick="sortGeneTable(5)" style="cursor: pointer;">Reviewed<span id="sort-arrow-5"></span></th>
                     <th>More</th>
                 </tr>
             </thead>
@@ -79,6 +79,40 @@
 
 
 <script>
+    const sortDirections = {};
+
+    function sortGeneTable(columnIndex) {
+        const table = document.getElementById("gene-table");
+        if (!table) {
+            return;
+        }
+
+        const rows = Array.from(table.tBodies[0].rows);
+        const ascending = !sortDirections[columnIndex];
+
+        rows.sort((rowA, rowB) => {
+            const valueA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
+            const valueB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
+
+            if (!isNaN(valueA) && !isNaN(valueB)) {
+                return ascending ? valueA - valueB : valueB - valueA;
+            }
+
+            return ascending ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+        });
+
+        rows.forEach((row) => table.tBodies[0].appendChild(row));
+        sortDirections[columnIndex] = ascending;
+
+        for (let i = 0; i <= 5; i++) {
+            document.getElementById("sort-arrow-" + i).innerHTML = "";
+        }
+
+        document.getElementById("sort-arrow-" + columnIndex).innerHTML = ascending ? " &uarr;" : " &darr;";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => sortGeneTable(0));
+
     function deleteGeneDataItem(id) {
         if (!confirm("Delete this gene?")) {
             return;
