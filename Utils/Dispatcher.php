@@ -53,14 +53,20 @@ class Utils_Dispatcher
             }
 
             if ($action && method_exists($controller, $action)) {
-                $controller->$action();
+            $controller->$action();
+                if (in_array($verb, ['put', 'delete', 'patch'])) {
+                    exit();
+                }
             } elseif (method_exists($controller, $verb)) {
                 $controller->$verb();
+                if (in_array($verb, ['put', 'delete', 'patch'])) {
+                    exit();
+                }
             } else {
                 throw new Exception("Method not allowed");
             }
 
-            if (!isset($_SESSION["user"])) {
+            if (!Utils_Login::is_logged_in() && !isset($_SESSION["user"])) {
                 Utils_Login::register_guest();
             }
 
