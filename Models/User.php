@@ -41,4 +41,34 @@ class Models_User extends Models_Base{
             return new Domains_User($item);
         }, $res);
     }
+
+    public function delete($id): void {
+        if (!filter_var($id, FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]])) {
+            throw new Exceptions_NotFound();
+        }
+
+        $id = (int)$id;
+
+        $this->connection->beginTransaction();
+
+        try {
+            $query = "UPDATE genedataitem SET created_by = NULL WHERE created_by = :id";
+            $statement = $this->connection->prepare($query);
+            $statement->execute([":id" => $id]);
+
+            $query = "DELETE FROM user WHERE id = :id";
+            $statement = $this->connection->prepare($query);
+            $statement->execute([":id" => $id]);
+
+            if ($statement->rowCount() === 0) {
+                throw new Exceptions_NotFound();
+            }
+
+            $this->connection->commit();
+        } catch (Throwable $e) {
+            $this->connection->rollBack();
+            throw $e;
+        }
+    }
+
 }

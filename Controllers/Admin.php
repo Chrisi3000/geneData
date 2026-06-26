@@ -18,4 +18,27 @@ class Controllers_Admin extends Controllers_Base {
         $data = $this->model->findAll();
         $this->view->render($data);
     }
+
+    public function delete() {
+        if(!Utils_Login::is_admin()){
+            throw new Exceptions_Unauthorized("Unauthorized");
+        }
+
+        $id = $this->params[0] ?? null;
+
+        if ($id === "users") {
+            $id = $this->params[1] ?? null;
+        }
+
+        if($id === null){
+            throw new Exception("Id not found");
+        }
+
+        if ((int)$id === (int)Utils_Login::get_user_id()) {
+            throw new Exception("You cannot delete your own user.");
+        }
+
+        $this->model->delete($id);
+        http_response_code(204);
+    }
 }

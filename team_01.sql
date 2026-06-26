@@ -54,7 +54,7 @@ CREATE TABLE `genedataitem` (
   `function` varchar(500) DEFAULT NULL,
   `organism_id` int(11) NOT NULL,
   `reviewed` BOOLEAN NOT NULL DEFAULT 0,
-  `created_by` int(11) NOT NULL
+  `created_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- add test data
@@ -138,7 +138,7 @@ ALTER TABLE `genedataitem`
     ADD CONSTRAINT `fk_genedataitem_user`
         FOREIGN KEY (`created_by`)
         REFERENCES `user` (`id`)
-        ON DELETE RESTRICT
+        ON DELETE SET NULL
         ON UPDATE CASCADE;
 
 -- Add AutoIncrement

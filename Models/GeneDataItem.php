@@ -13,10 +13,10 @@ class Models_GeneDataItem extends Models_Base {
                         o.latin_name AS organism,
                         g.reviewed,
                         g.created_by,
-                        u.username as creator
+                        COALESCE(u.username, 'Deleted user') as creator
                     FROM genedataitem g
                     JOIN organism o ON o.id = g.organism_id
-                    JOIN user u ON u.id = g.created_by";
+                    LEFT JOIN user u ON u.id = g.created_by";
 
 
         $statement = $this->connection->query($statement);
@@ -39,10 +39,10 @@ class Models_GeneDataItem extends Models_Base {
                         o.latin_name AS organism,
                         g.reviewed,
                         g.created_by,
-                        u.username as creator
+                        COALESCE(u.username, 'Deleted user') as creator
                     FROM genedataitem g
                     JOIN organism o ON o.id = g.organism_id
-                    JOIN user u ON u.id = g.created_by
+                    LEFT JOIN user u ON u.id = g.created_by
                     WHERE g.id = :id";
 
         $statement = $this->connection->prepare($statement);
