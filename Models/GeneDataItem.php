@@ -69,9 +69,9 @@ class Models_GeneDataItem extends Models_Base {
     public function insert(Domains_GeneDataItem $gene): Domains_GeneDataItem
     {
         $query = "INSERT INTO genedataitem
-        (genename, genesymbol, aliases, position, function, organism_id, reviewed, created_by)
-        VALUES
-        (:genename, :genesymbol, :aliases, :position, :function, :organism_id, :reviewed, :created_by)";
+                (genename, genesymbol, aliases, position, function, organism_id, reviewed, created_by)
+                VALUES
+                (:genename, :genesymbol, :aliases, :position, :function, :organism_id, :reviewed, :created_by)";
 
         $statement = $this->connection->prepare($query);
 
@@ -89,6 +89,35 @@ class Models_GeneDataItem extends Models_Base {
         $id = $this->connection->lastInsertId();
 
         return $this->findById($id);
+    }
+
+    public function update(Domains_GeneDataItem $obj) {
+        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "UPDATE genedataitem 
+            SET genename = :genename, 
+                genesymbol = :genesymbol, 
+                aliases = :aliases,
+                position = :position, 
+                function = :function,
+                organism_id = :organism_id, 
+                reviewed = :reviewed
+            WHERE id = :id";
+
+        $stmt = $this->connection->prepare($sql);
+
+        $dataArray = $obj->jsonSerialize();
+
+        return $stmt->execute([
+            ':genename'   => $dataArray['genename'] ?? null,
+            ':genesymbol' => $dataArray['genesymbol'] ?? null,
+            ':aliases'    => !empty($dataArray['aliases']) ? $dataArray['aliases'] : null,
+            ':position'   => $dataArray['position'] ?? null,
+            ':function'   => !empty($dataArray['function']) ? $dataArray['function'] : null,
+            ':organism_id'=> (int)($dataArray['organism_id'] ?? 0),
+            ':reviewed'   => (int)($dataArray['reviewed'] ?? 0),
+            ':id'         => (int)($dataArray['id'] ?? 0)
+        ]);
     }
 
 }

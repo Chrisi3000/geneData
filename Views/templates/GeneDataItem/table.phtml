@@ -18,7 +18,7 @@
                     <th>Position</th>
                     <th>Organism</th>
                     <th>Reviewed</th>
-                    <th>Details</th>
+                    <th>Miscellaneous</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,6 +58,13 @@
                                        &#128465;&#65039;
                                    </button>
                                <?php endif; ?>
+                               <?php if (Utils_Login::is_logged_in()): ?>
+                                   <a href="/geneData/GeneDataItem/edit/<?= (int)$obj->id ?>"
+                                      class="details-button btn btn-sm rounded-circle"
+                                      title="Edit">
+                                       ✏️
+                                   </a>
+                               <?php endif; ?>
                            </div>
                        </td>
                    </tr>
@@ -74,7 +81,6 @@
             </div>
         </div>
     <?php } ?>
-
 
 
 
