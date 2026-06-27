@@ -325,6 +325,68 @@ JavaScript wird nicht für sicherheitsrelevante Validierung eingesetzt. Es dient
 
 
 ### Admin Management
+(Die Testuser beginnen mit der Id 4, da davor schon andere Testuser erstellt wurden. Diese wurden aber vor den Tests wieder gelöscht.)
+
+Hier wird die Hauptseite für das User Management angezeigt. Es muss ein Admin eingelogt sein. Nur Admins sehen einen Button um zum User Management zu kommen.
+![mainUser.png](eva/mainUser.png)
+
+Das ist der aktuelle Stand der Datenbank in MySQL:
+![img_4.png](eva/img_4.png)
+
+Ansicht für eingeloggte Admins:
+![img_2.png](./eva/img_3.png)
+
+Ansicht für guests:
+![img_2.png](./eva/img_2.png)
+
+Ansicht für eingeloggte User:
+![img_2.png](./eva/img_1.png)
+
+Wenn ein Nicht-Admin direkt auf die Seite geht, wird ein Fehler ausgegeben.
+![alt text](./eva/img.png)
+
+Das Anklicken der Checkbox bei Admin setzt einen User zu Admin/ändert den Admin zu einem normalen User. Dies ist aber nur möglich für User, die nicht der aktuelle User ist. Beim aktuellen User steht "Current User".
+Bevor der State geändert wird, wird der aktuelle User gefragt, ob die Änderung durchgeführt werden soll.
+![img_5.png](eva/img_5.png)
+
+Wenn hier "Ok" gedrückt wird, wird der State des Users auf Admin gesetzt. In diesem Fall vom User "sami".
+![img_6.png](eva/img_6.png)
+Nun würde man auch als "sami" auf die User-Management Seite kommen und könnte angemeldete User bearbeiten.
+![img_8.png](eva/img_8.png)
+
+Wenn "Abbrechen" gedrückt wird, ändert sich nichts.
+![img_7.png](eva/img_7.png)
+
+Eine aktivierte Checkbox kann durch erneutes Klicken wieder deaktiviert werden und somit der Admin State wieder auf false gesetzt werden.
+![img_9.png](eva/img_9.png)
+
+Wenn hier "Ok" gedrückt wird, wird der State des Users auf nicht-Admin gesetzt. In diesem Fall vom User "sami".
+![img_10.png](eva/img_10.png)
+
+Wenn "Abbrechen" gedrückt wird, ändert sich nichts.
+![img_11.png](eva/img_11.png)
+
+Das Löschen von Usern kann mit dem Delete-Button der Delete Spalte getätigt werden. Gleich wie beim Ändern des Admin-States kann dies nicht vom aktuellen User für sich selbst gemacht werden.
+Dies ist der aktuelle Stand der Datenbank.
+![img_12.png](eva/img_12.png)
+![img_13.png](eva/img_13.png)
+
+Vom aktuellen User können sowohl normale User als auch andere Admins gelöscht werden.
+Das Löschen ruft wieder eine Meldung auf, ob die aktuelle Person gelöscht werden soll.
+![img_14.png](eva/img_14.png)
+
+Wenn hier "Ok" gedrückt wird, wird der User gelöscht und nicht mehr in der Tabelle angezeigt. In diesem Fall "chris".
+![img_17.png](eva/img_17.png)
+![img_18.png](eva/img_18.png)
+
+Wenn "Abbrechen" gedrückt wird, ändert sich nichts.
+![img_15.png](eva/img_15.png)
+![img_16.png](eva/img_16.png)
+
+Das Löschen eines normalen Users funktioniert gleich, in diesem Fall "eva".
+![img_19.png](eva/img_19.png)
+![img_20.png](eva/img_20.png)
+
 
 ### Main Page - Table, Details, Delete Genes
 
