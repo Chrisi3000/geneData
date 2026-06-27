@@ -345,3 +345,37 @@ Als nicht eingeloggter User ist dieselbe Tabelle zu sehen, aber nur mit der zus�
 
 
 ### Add / Update Gene
+Das Add Formular lässt sich mit dem Knopf "Add Gene" öffnen:
+![Add Button](./samuel/Add_Button.png)
+Das Formular sieht wie folgt aus:
+![Add Formular](./samuel/Add_Formular.png)
+Gene Name, Gene Symbol und Organism muss man ausfüllen.
+![Gene Name required](./samuel/Gene_Name_Required.png)
+![Gene Symbol required](./samuel/Gene_Symbol_Required.png)
+![Position required](./samuel/Position_Required.png)
+![Organism required](./samuel/Organism_Required.png)
+Das Drop-Down-Menü für Organism sieht so aus:
+![Organism Drop Down](./samuel/DropDownOrganisms.png)
+Füllt man das Formular aus und drückt man Save wird das Gen gespeichert
+![Test Gene Formular](./samuel/Test_Gene_Add_Site.png)
+In der Detailansicht sieht man alle ausgefüllten Felder plus den User der bei der Erstellung eingeloggt war.
+![Details Test Gene](./samuel/Added_Test_Gene.png)
+Auch in der Overall Tabelle sieht man das erstellte Gen.
+![Overall Test Gene](./samuel/Added_Test_Gene_in_Overall_Table.png)
+Wenn man ein Gen nur mit required Feldern erstellt sind in der Detailansicht manche Zeilen frei
+![Minimal Gene](./samuel/MinimalGene.png)
+![Details Minimal Gene](./samuel/DetailsMG.png)
+---
+Nun soll das Test-Gen editiert werden. Dafür muss der Edit Knopf mit dem Bleistift gedrückt werden.
+![Update Button](./samuel/Edit_Test_Gene.png)
+Drückt man den Knopf kommt man zum Bearbeitungsformular. Die Parameter sind bereits ausgefüllt. Im Header steht das zu bearbeitende Gen.
+![Edit Page Test Gene](./samuel/EditPage.png)
+Die im Add genannten Felder sind auch hier required.
+![Gene Name required](./samuel/Name_required.png)
+Nun ändern wir Symbol, Position, Organism und setzen den Status auf Reviewed.
+![Test Gene Update Formular](./samuel/Changed_Test_Gene_Formular.png)
+In der Details Page sieht man dann die Änderungen
+![Details Gene Update](./samuel/Changed_Test_Gene_Details.png)
+Auch in der Gen Übersicht sieht man die Änderungen
+![Overview Updated Gene](./samuel/OverviewChangedGene.png)
+
