@@ -198,6 +198,8 @@ erDiagram
 
     USER {
         int id PK
+        varchar firstname
+        varchar lastname
         varchar username UK
         varchar password
         boolean is_admin
