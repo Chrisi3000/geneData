@@ -181,7 +181,7 @@ Die Tabelle `genedataitem` speichert die Gen-Datensätze.
 | `aliases` | VARCHAR(255), nullable | Alternative Namen |
 | `position` | VARCHAR(100) | Chromosomale Position |
 | `function` | VARCHAR(500), nullable | Beschreibung der Funktion |
-| `organism_id` | INT, Foreign Key | Verweis auf `organism.id` |
+| `organism_id` | INT, Foreign Key, NOT NULL | Verpflichtender Verweis auf `organism.id` |
 | `reviewed` | BOOLEAN | Gibt an, ob der Datensatz geprüft wurde |
 | `created_by` | INT, Foreign Key, nullable | Verweis auf `user.id` |
 
@@ -193,7 +193,7 @@ Das folgende ER-Diagramm wurde manuell auf Basis des Datenbankmodells erstellt. 
 
 ```mermaid
 erDiagram
-    USER ||--o{ GENEDATAITEM : creates
+    USER |o--o{ GENEDATAITEM : optionally_creates
     ORGANISM ||--o{ GENEDATAITEM : contains
 
     USER {
@@ -218,18 +218,18 @@ erDiagram
         varchar aliases
         varchar position
         varchar function
-        int organism_id FK
+        int organism_id FK "NOT NULL"
         boolean reviewed
-        int created_by FK
+        int created_by FK "nullable"
     }
 ```
 
 Beziehungen:
 
 - Ein `organism` kann mehreren `genedataitem`-Einträgen zugeordnet sein.
-- Ein `genedataitem` gehört genau zu einem `organism`.
+- Ein `genedataitem` gehört genau zu einem `organism`; `organism_id` ist deshalb verpflichtend und darf nicht `NULL` sein.
 - Ein `user` kann mehrere `genedataitem`-Einträge erstellt haben.
-- Ein `genedataitem` kann optional einen `user` als Ersteller besitzen. Nach dem Löschen eines Benutzers ist `created_by` `NULL`.
+- Ein `genedataitem` kann optional einen `user` als Ersteller besitzen; `created_by` darf `NULL` sein. Nach dem Löschen eines Benutzers wird `created_by` durch `ON DELETE SET NULL` auf `NULL` gesetzt.
 
 ## Dokumentierte Architektur-Skizze
 
@@ -297,6 +297,7 @@ Diese Skizze zeigt den technischen Ablauf einer Anfrage. Der Browser sendet eine
 3. Die Benutzerliste wird geladen und angezeigt.
 4. Administratoren können Benutzer löschen.
 5. Administratoren können die Rolle eines Benutzers zwischen normalem Benutzer und Admin umschalten.
+6. User-IDs für Rollenänderungen und Löschvorgänge werden serverseitig als positive Integer geprüft und gegen die Datenbank validiert.
 
 ## Sicherheit
 
@@ -306,7 +307,8 @@ Die Anwendung berücksichtigt folgende Sicherheitsaspekte:
 - Passwörter werden gehasht und nicht im Klartext gespeichert.
 - Kritische Aktionen werden serverseitig auf Rollen und Login-Status geprüft.
 - Textuelle Benutzereingaben werden serverseitig validiert.
-- Textuelle Ausgaben aus Benutzereingaben werden mit `htmlspecialchars()` für HTML escaped.
+- User-IDs in der Benutzerverwaltung werden serverseitig geprüft, bevor Benutzer gelöscht oder Rollen geändert werden.
+- Textuelle Ausgaben aus Benutzereingaben und Datenbankwerten werden in den Views mit `htmlspecialchars()` für HTML escaped, damit gespeicherte Sonderzeichen nicht als HTML oder JavaScript ausgeführt werden.
 - Fremdschlüssel und Constraints schützen die Datenintegrität in der Datenbank.
 
 ## Frontend und Bedienung
@@ -487,3 +489,38 @@ In der Details Page sieht man dann die Änderungen
 Auch in der Gen Übersicht sieht man die Änderungen
 
 ![Overview Updated Gene](./samuel/OverviewChangedGene.png)
+
+### REST Tests
+
+`database.rest`
+
+Diese Datei testet die grundlegenden Datenbankzugriffe für die Ressource GeneDataItem. Es wird geprüft, ob alle Gene geladen werden können, ob ein einzelnes bestehendes Gen per ID abrufbar ist und ob die CRUD-Operationen Erstellen, Bearbeiten und Löschen über REST-Requests grundsätzlich funktionieren.
+
+![alt text](./chris/Screenshot%202026-06-27%20223901.png)
+
+`gene.rest`
+
+Diese Datei testet die Gen-Verwaltung ausführlicher. Neben dem Abrufen, Erstellen, Bearbeiten und Löschen von Gen-Datensätzen werden auch Fehlerfälle geprüft, zum Beispiel das Bearbeiten einer nicht vorhandenen ID, fehlende Pflichtfelder und eine ungültige organism_id.
+
+![alt text](./chris/Screenshot%202026-06-27%20224119.png)
+
+`user.rest`
+
+Diese Datei testet Benutzerfunktionen und Rollenverhalten. Es werden Gastzugang, Registrierung, Login und Logout geprüft. Zusätzlich wird getestet, ob geschützte Admin-Bereiche ohne passende Berechtigung blockiert werden und ob normale Benutzer trotzdem öffentliche Gen-Daten abrufen können.
+
+![alt text](./chris/Screenshot%202026-06-27%20224404.png)
+
+![alt text](./chris/Screenshot%202026-06-27%20225357.png)
+
+![alt text](./chris/Screenshot%202026-06-27%20224534.png)
+
+`userManagement.rest`
+
+Diese Datei testet die Admin-Benutzerverwaltung. Sie prüft das Abrufen der Benutzerliste, das Ändern des Admin-Status, das Löschen von Benutzern sowie Zugriffsschutzfälle wie Admin-Zugriff ohne Login oder Rollenänderungen durch Nicht-Administratoren.
+
+![alt text](./chris/Screenshot%202026-06-27%20224631.png)
+
+`security.rest`
+Diese Datei testet sicherheitsrelevante Fehlerfälle. Dazu gehören ein SQL-Injection-Versuch beim Login, extrem lange Eingaben bei Gen-Daten und ungültige IDs wie eine negative ID beim Löschen. Damit wird geprüft, ob die Anwendung problematische Eingaben abfängt oder zumindest nicht unsicher verarbeitet.
+
+![alt text](./chris/Screenshot%202026-06-27%20224148.png)

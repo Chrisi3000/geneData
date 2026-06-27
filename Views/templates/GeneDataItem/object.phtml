@@ -1,5 +1,6 @@
 <?php include __DIR__ . "/../_header.phtml"; ?>
 <?php /** @var Domains_GeneDataItem $data */ ?>
+<?php $escape = fn($value) => htmlspecialchars((string)$value, ENT_QUOTES, "UTF-8"); ?>
 
     <a href="/geneData/GeneDataItem"
        class="btn btn-outline-success rounded-pill px-3">
@@ -17,39 +18,39 @@
             <tbody>
                 <tr>
                     <th>Id</th>
-                    <td class="fw-semibold"><?=$data->id?></td>
+                    <td class="fw-semibold"><?=(int)$data->id?></td>
                 </tr>
                 <tr>
                     <th>GeneName</th>
-                    <td><?=$data->genename?></td>
+                    <td><?=$escape($data->genename)?></td>
                 </tr>
                 <tr>
                     <th>GeneSymbol</th>
                     <td>
                         <span class="badge bg-secondary">
-                            <?=$data->genesymbol?>
+                            <?=$escape($data->genesymbol)?>
                         </span>
                     </td>
                 </tr>
                 <tr>
                     <th>Aliases</th>
-                    <td><?=$data->aliases?></td>
+                    <td><?=$escape($data->aliases)?></td>
                 </tr>
                 <tr>
                     <th>Position</th>
                     <td>
                         <code>
-                            <?=$data->position?>
+                            <?=$escape($data->position)?>
                         </code>
                     </td>
                 </tr>
                 <tr>
                     <th>Function</th>
-                    <td><?=$data->function?></td>
+                    <td><?=$escape($data->function)?></td>
                 </tr>
                 <tr>
                     <th>Organism</th>
-                    <td><?=$data->organism?></td>
+                    <td><?=$escape($data->organism)?></td>
                 </tr>
                 <tr>
                     <th>Reviewed</th>
@@ -60,7 +61,7 @@
                 </tr>
                 <tr>
                     <th>Created by</th>
-                    <td><?=$data->creator?></td>
+                    <td><?=$escape($data->creator)?></td>
                 </tr>
             </tbody>
         </table>

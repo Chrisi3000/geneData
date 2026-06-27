@@ -43,7 +43,7 @@ $organisms = $data['organisms'];
             <label>Organism</label>
             <select name="organism_id" class="form-select" required>
                 <?php foreach ($organisms as $organism): ?>
-                    <option value="<?= $organism->id ?>" <?= $organism->id == $gene->organism_id ? 'selected' : '' ?>>
+                    <option value="<?= (int)$organism->id ?>" <?= (int)$organism->id === (int)$gene->organism_id ? 'selected' : '' ?>>
                         <?= htmlspecialchars($organism->name) ?>
                     </option>
                 <?php endforeach; ?>

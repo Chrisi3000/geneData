@@ -1,6 +1,23 @@
 <?php
 
 class Models_User extends Models_Base{
+    private function validateId($id): int {
+        if (!filter_var($id, FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]])) {
+            throw new Exceptions_NotFound();
+        }
+
+        $id = (int)$id;
+        $query = "SELECT id FROM user WHERE id = :id";
+        $statement = $this->connection->prepare($query);
+        $statement->execute([":id" => $id]);
+
+        if (!$statement->fetch(PDO::FETCH_ASSOC)) {
+            throw new Exceptions_NotFound();
+        }
+
+        return $id;
+    }
+
     // fetches user and validates raw password against the stored secure hash
     public function login($user, $password) : ?Domains_User {
         $query = "SELECT id, firstname, lastname, username, password, is_admin 
@@ -49,24 +66,19 @@ class Models_User extends Models_Base{
 
     // updates administrative privilege flag settings for a specific user id row
     public function setToAdmin($id, $is_admin) {
+        $id = $this->validateId($id);
+
         $query = "UPDATE user SET is_admin = :is_admin WHERE id = :id";
         $statement = $this->connection->prepare($query);
         $statement->execute([
             ":is_admin" => $is_admin ? 1 : 0,
             ":id" => $id
         ]);
-
-        echo $id;
-        echo $statement->rowCount();
     }
 
     // removes a user within an isolated database transaction block to safely clear foreign keys
     public function delete($id): void {
-        if (!filter_var($id, FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]])) {
-            throw new Exceptions_NotFound();
-        }
-
-        $id = (int)$id;
+        $id = $this->validateId($id);
 
         $this->connection->beginTransaction();
 

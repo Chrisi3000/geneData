@@ -41,7 +41,7 @@
                 <option value="" disabled selected>-- please choose --</option>
                 <!--for for organism selector-->
                 <?php foreach ($data as $organism): ?>
-                    <option value="<?= $organism->id ?>">
+                    <option value="<?= (int)$organism->id ?>">
                         <?= htmlspecialchars($organism->name) ?>
                         <?php if (!empty($organism->latin_name)): ?>
                             (<?= htmlspecialchars($organism->latin_name) ?>)

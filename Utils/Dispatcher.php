@@ -51,7 +51,6 @@ class Utils_Dispatcher
             }
 
             if ($verb === "patch") {
-                var_dump($verb);
                 $GLOBALS["_PATCH"] = json_decode(file_get_contents("php://input"), true);
             }
 
@@ -78,7 +77,7 @@ class Utils_Dispatcher
 
         } catch (Throwable $e) {
             echo "error occurred: ";
-            echo $e->getMessage();
+            echo htmlspecialchars($e->getMessage(), ENT_QUOTES, "UTF-8");
         }
     }
 }
