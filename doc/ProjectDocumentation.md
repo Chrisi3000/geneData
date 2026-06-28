@@ -369,8 +369,11 @@ Der Login mit einem nicht existierendem Benutzer sollte zu einer Fehlermeldung f
 <img src="eva/img_31.png" width="300" heigth="auto"/>
 <img src="eva/img_32.png" width="300" heigth="auto"/>
 
-Der Login für Admins funktioniert so wie bei normalen Benutzern. Jedoch sehen Admins auf der Hauptseite, neben den Buttons für normale User, einen Knopf für das User-Management.
-![img_33.png](eva/img_33.png)
+Wenn man Auf den sehenden Affen drückt, wird das Passwort in Klartext angezeigt. Wenn man auf den blinden Affen drückt, wird es wieder zensiert.
+<img src="eva/img_33.png" width="300" heigth="auto"/>
+<img src="eva/img_33,5.png" width="300" heigth="auto"/>
+<br>Der Login für Admins funktioniert so wie bei normalen Benutzern. Jedoch sehen Admins auf der Hauptseite, neben den Buttons für normale User, einen Knopf für das User-Management.
+
 ![img_34.png](eva/img_34.png)
 
 Neue User können sich selbst registrieren indem sie auf den "Register" Knopf drücken. Dadurch wird man auf eine Seite weitergeleitet, wo man den Vornamen, Nachnamen, Benutzernamen und ein Passwort eingeben muss.
