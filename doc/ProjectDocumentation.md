@@ -155,6 +155,8 @@ Die Tabelle `user` speichert Benutzerkonten und Rolleninformationen.
 | Spalte | Typ | Beschreibung |
 |---|---|---|
 | `id` | INT, Primary Key, Auto Increment | Eindeutige Benutzer-ID |
+| `firstname` | VARCHAR(30) | Vorname des Benutzers |
+| `lastname` | VARCHAR(30) | Nachname des Benutzers |
 | `username` | VARCHAR(30), UNIQUE | Benutzername |
 | `password` | VARCHAR(65) | Passwort-Hash |
 | `is_admin` | BOOLEAN | Admin-Status |
@@ -306,7 +308,7 @@ Die Anwendung berücksichtigt folgende Sicherheitsaspekte:
 - Datenbankzugriffe mit Benutzereingaben erfolgen über PDO Prepared Statements.
 - Passwörter werden gehasht und nicht im Klartext gespeichert.
 - Kritische Aktionen werden serverseitig auf Rollen und Login-Status geprüft.
-- Textuelle Benutzereingaben werden serverseitig validiert.
+- Textuelle Benutzereingaben werden serverseitig validiert. Dazu gehören auch die Werte aus Formularen wie Login, Registrierung, Gen-Erstellung, Gen-Bearbeitung und Benutzerverwaltung.
 - User-IDs in der Benutzerverwaltung werden serverseitig geprüft, bevor Benutzer gelöscht oder Rollen geändert werden.
 - Textuelle Ausgaben aus Benutzereingaben und Datenbankwerten werden in den Views mit `htmlspecialchars()` für HTML escaped, damit gespeicherte Sonderzeichen nicht als HTML oder JavaScript ausgeführt werden.
 - Fremdschlüssel und Constraints schützen die Datenintegrität in der Datenbank.
@@ -320,6 +322,7 @@ JavaScript wird nicht für sicherheitsrelevante Validierung eingesetzt. Es dient
 - Sortieren der Gene-Tabelle per Klick auf eine Spaltenüberschrift
 - Anzeige der aktuell sortierten Spalte über Pfeile
 - Senden von Delete-Requests ohne separates Formular
+- Ein- und Ausblenden von Passwörtern in Login- und Registrierungsformularen
 
 ## Testfälle
 

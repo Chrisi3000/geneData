@@ -42,7 +42,7 @@ class Controllers_Admin extends Controllers_Base {
             return;
         }
 
-        $current_logged_in_id = isset($_SESSION["id"]) ? (int)$_SESSION["id"] : null;
+        $current_logged_in_id = Utils_Login::get_user_id();
 
         // prevents self-demotion anomalies by locking alterations to the active user's own token
         if ($current_logged_in_id !== null && $id === $current_logged_in_id) {
